@@ -1,20 +1,22 @@
 package internshipapp.controller;
 
 import internshipapp.persistence.model.Student;
+import internshipapp.persistence.model.dtos.StudentDto;
 import internshipapp.persistence.model.exception.StudentException;
 import internshipapp.service.StudentService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@RestController
 @RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/email")
     public ResponseEntity<Student> getStudentByEmail(@RequestParam("email") String email) throws StudentException {
@@ -24,8 +26,9 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> saveStudent(@RequestBody Student student) throws StudentException {
-        Student savedstudent = studentService.saveStudent(student);
+    public ResponseEntity<Student> saveStudent(@RequestBody StudentDto student) throws StudentException {
+        Student s = modelMapper.map(student, Student.class);
+        Student savedstudent = studentService.saveStudent(s);
 
         return new ResponseEntity<>(savedstudent, HttpStatus.OK);
     }

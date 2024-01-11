@@ -43,7 +43,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentByEmail(String email) throws StudentException {
         if (studentRepository.findStudentByEmail(email).isEmpty()) {
-            throw new StudentException("User with this email does not exist");
+            throw new StudentException("User with this email does not exist" + email);
         }
         return studentRepository.findStudentByEmail(email).get();
     }

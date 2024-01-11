@@ -10,6 +10,7 @@ import internshipapp.service.InternshipOfferService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,9 +24,10 @@ public class InternshipOfferServiceImpl implements InternshipOfferService {
     private final RecruiterRepository recruiterRepository;
 
     @Override
-    public InternshipOffer saveInternshipOffer(InternshipOffer internshipOffer, Recruiter recruiter) {
-        internshipOffer.setRecruiter(recruiter);
-        recruiterRepository.save(recruiter);
+    public InternshipOffer saveInternshipOffer(InternshipOffer internshipOffer, Long idRecruiter) {
+        Recruiter r = recruiterRepository.findById(idRecruiter).get();
+        internshipOffer.setRecruiter(r);
+        recruiterRepository.save(r);
 
         return internshipOfferRepository.save(internshipOffer);
     }
@@ -43,14 +45,25 @@ public class InternshipOfferServiceImpl implements InternshipOfferService {
     }
 
     @Override
-    public void applyForInternship(InternshipOffer internshipOffer, Student student) {
-        Set<Student> students = new HashSet<>();
-        students.add(student);
-        internshipOffer.setStudents(students);
+    public void applyForInternship(InternshipOffer internshipOffer, Long idStudent) {
+        Recruiter r = internshipOffer.getRecruiter();
+        // Find the student by ID. Use orElseThrow to avoid NullPointerExceptions.
+        Student student = studentRepository.findById(idStudent)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
-        Set<InternshipOffer> internshipOffers = new HashSet<>();
-        internshipOffers.add(internshipOffer);
-        student.setInternshipOffers(internshipOffers);
+        // Add the internshipOffer to the student's collection of internshipOffers.
+        // This ensures that the relationship is managed on both sides.
+        student.getInternshipOffers().add(internshipOffer);
+
+        // Similarly, add the student to the internshipOffer's collection of students.
+        internshipOffer.getStudents().add(student);
+
+        // Save the student. Depending on the cascade settings, this may also persist the changes to internshipOffer.
         studentRepository.save(student);
+
+        // It might not be necessary to save the internshipOffer if cascade is properly set up in the Student entity.
+        // Otherwise, save the internshipOffer to persist the relationship.
+        internshipOfferRepository.save(internshipOffer);
     }
+
 }
