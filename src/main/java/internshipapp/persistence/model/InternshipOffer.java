@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "internship_offers")
@@ -36,6 +37,6 @@ public class InternshipOffer {
             name = "student_internship_offer",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "internship_offer_id"))
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
 
 }
