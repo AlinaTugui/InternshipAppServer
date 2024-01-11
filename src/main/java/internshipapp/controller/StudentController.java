@@ -31,7 +31,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getUserById(@PathVariable Long id) throws StudentException {
+    public ResponseEntity<Student> getStudentById(@PathVariable Long id) throws StudentException {
         Student student = studentService.getStudentById(id);
 
         return new ResponseEntity<>(student, HttpStatus.OK);
