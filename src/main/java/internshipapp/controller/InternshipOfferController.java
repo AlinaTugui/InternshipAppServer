@@ -2,6 +2,7 @@ package internshipapp.controller;
 
 import internshipapp.persistence.dtos.InternshipDto;
 import internshipapp.persistence.dtos.InternshipRequest;
+import internshipapp.persistence.dtos.InternshipResponse;
 import internshipapp.persistence.model.InternshipOffer;
 import internshipapp.service.InternshipOfferService;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
@@ -21,8 +23,14 @@ public class InternshipOfferController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<InternshipOffer>> getAllInternships() {
-        List<InternshipOffer> internshipsList = internshipOfferService.getAllInternshipOffers();
+    public ResponseEntity<List<InternshipResponse>> getAllInternships() {
+        List<InternshipResponse> internshipsList = internshipOfferService.getAllInternshipOffers().stream().map(
+                x -> {
+                    InternshipResponse response = new InternshipResponse(x.getId(),x.getCity(),x.getType(),x.getDescription(),x.getDomain(),x.getPaid(),x.getRecruiter().getFirstName(),
+                            x.getRecruiter().getLastName(),x.getRecruiter().getEmail(),x.getRecruiter().getPhoneNumber(),x.getRecruiter().getCompanyName());
+                    return response;
+                }
+        ).collect(Collectors.toList());
 
         return new ResponseEntity<>(internshipsList, HttpStatus.OK);
     }
