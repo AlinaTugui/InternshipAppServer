@@ -35,8 +35,8 @@ public class InternshipOffer {
     @ManyToMany
     @JoinTable(
             name = "student_internship_offer",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "internship_offer_id"))
+            joinColumns = @JoinColumn(name = "internship_offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students;
 
 }
