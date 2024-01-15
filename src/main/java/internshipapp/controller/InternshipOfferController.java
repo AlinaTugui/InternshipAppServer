@@ -1,10 +1,9 @@
 package internshipapp.controller;
 
 import internshipapp.persistence.dtos.InternshipDto;
+import internshipapp.persistence.dtos.InternshipRequest;
 import internshipapp.persistence.model.InternshipOffer;
 import internshipapp.service.InternshipOfferService;
-import internshipapp.service.RecruiterService;
-import internshipapp.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -35,9 +34,9 @@ public class InternshipOfferController {
     }
 
     @PostMapping("/internship-application")
-    public ResponseEntity<Object> applyForInternship(@RequestBody InternshipDto internshipDto) {
-        InternshipOffer internshipOffer = modelMapper.map(internshipDto, InternshipOffer.class);
-        internshipOfferService.applyForInternship(internshipOffer,internshipDto.getIdUser());
+    public ResponseEntity<Object> applyForInternship(@RequestBody InternshipRequest internshipDto) {
+
+        internshipOfferService.applyForInternship(internshipDto.getIdInternship(),internshipDto.getIdUser());
 
         return new ResponseEntity<>("Application submitted successfully!", HttpStatus.OK);
 

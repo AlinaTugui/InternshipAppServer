@@ -42,12 +42,15 @@ public class InternshipOfferServiceImpl implements InternshipOfferService {
     }
 
     @Override
-    public void applyForInternship(InternshipOffer internshipOffer, Long idStudent) {
-        Recruiter r = internshipOffer.getRecruiter();
+    public void applyForInternship(Long idInternship, Long idStudent) {
+        InternshipOffer internshipOffer = internshipOfferRepository.findById(idInternship)
+                .orElseThrow(() -> new EntityNotFoundException("InternshipOffer not found"));;
         Student student = studentRepository.findById(idStudent)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+
         student.getInternshipOffers().add(internshipOffer);
         internshipOffer.getStudents().add(student);
+
         studentRepository.save(student);
         internshipOfferRepository.save(internshipOffer);
     }

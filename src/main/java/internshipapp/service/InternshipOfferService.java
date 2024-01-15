@@ -13,5 +13,5 @@ public interface InternshipOfferService {
 
     List<InternshipOffer> getAllInternshipOfferForRecruiter(Long id);
 
-    void applyForInternship(InternshipOffer internshipOffer, Long idStudent);
+    void applyForInternship(Long idInternship, Long idStudent);
 }
