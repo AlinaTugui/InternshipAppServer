@@ -31,6 +31,7 @@ public class InternshipOffer {
     private Recruiter recruiter;
 
     //ManyToMany with Student
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "student_internship_offer",
