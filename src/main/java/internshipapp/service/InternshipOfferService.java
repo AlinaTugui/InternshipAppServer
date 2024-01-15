@@ -1,6 +1,8 @@
 package internshipapp.service;
 
 import internshipapp.persistence.model.InternshipOffer;
+import internshipapp.persistence.model.Recruiter;
+import internshipapp.persistence.model.Student;
 
 import java.util.List;
 

@@ -3,48 +3,34 @@ package internshipapp.service.impl;
 import internshipapp.persistence.model.Recruiter;
 import internshipapp.persistence.repository.RecruiterRepository;
 import internshipapp.service.RecruiterService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class RecruiterServiceImpl implements RecruiterService {
-    private final RecruiterRepository recruiterRepository;
+
+    @Resource
+    private RecruiterRepository recruiterRepository;
 
     @Override
-    public Recruiter saveRecruiter(Recruiter recruiter) throws Exception {
-        if (recruiterRepository.findRecruiterByEmail(recruiter.getEmail()).isPresent()) {
-            throw new Exception("This email already belong to a registered user");
-        }
-
+    public Recruiter save(Recruiter recruiter) {
         return recruiterRepository.save(recruiter);
     }
 
     @Override
-    public List<Recruiter> getAllRecruiters() {
+    public List<Recruiter> findAll() {
         return recruiterRepository.findAll();
     }
 
     @Override
-    public Recruiter getRecruiterByEmail(String email) throws Exception {
-        if (recruiterRepository.findRecruiterByEmail(email).isEmpty()) {
-            throw new Exception("User with this email does not exist");
-        }
-        return recruiterRepository.findRecruiterByEmail(email).get();
+    public Recruiter findById(Long recruiterId) {
+        return recruiterRepository.findById(recruiterId).get();
     }
 
     @Override
-    public Recruiter getRecruiterById(Long id) throws Exception {
-        if (recruiterRepository.findById(id).isEmpty()) {
-            throw new Exception("Recruiter with id="+id+" does not exist");
-        }
-
-        if (recruiterRepository.findById(id).isPresent()) {
-            return recruiterRepository.findById(id).get();
-        }
-
-        return null;
+    public Recruiter findByEmailAndPassword(String email, String password) {
+        return recruiterRepository.findRecruiterByEmailAndPassword(email, password);
     }
 }

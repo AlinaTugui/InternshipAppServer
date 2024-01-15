@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/internships")
 public class InternshipOfferController {
     private final InternshipOfferService internshipOfferService;
-    private final RecruiterService recruiterService;
-    private final StudentService studentService;
     private final ModelMapper modelMapper;
 
     @GetMapping
@@ -34,6 +32,15 @@ public class InternshipOfferController {
         List<InternshipOffer> internshipsList = internshipOfferService.getAllInternshipOfferForRecruiter(id);
 
         return new ResponseEntity<>(internshipsList, HttpStatus.OK);
+    }
+
+    @PostMapping("/internship-application")
+    public ResponseEntity<Object> applyForInternship(@RequestBody InternshipDto internshipDto) {
+        InternshipOffer internshipOffer = modelMapper.map(internshipDto, InternshipOffer.class);
+        internshipOfferService.applyForInternship(internshipOffer,internshipDto.getIdUser());
+
+        return new ResponseEntity<>("Application submitted successfully!", HttpStatus.OK);
+
     }
 
     @PostMapping

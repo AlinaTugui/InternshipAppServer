@@ -5,11 +5,12 @@ import internshipapp.persistence.model.Student;
 import java.util.List;
 
 public interface StudentService {
-    Student saveStudent(Student student) throws Exception;
+    Student save(Student student);
 
-    List<Student> getAllStudents();
+    List<Student> findAll();
 
-    Student getStudentById(Long id) throws Exception;
+    Student findById(Long studentId);
 
-    Student getStudentByEmail(String email) throws Exception;
+    Student findByEmailAndPassword(String email, String password);
+
 }

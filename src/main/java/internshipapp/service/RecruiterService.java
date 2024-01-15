@@ -5,12 +5,12 @@ import internshipapp.persistence.model.Recruiter;
 import java.util.List;
 
 public interface RecruiterService {
-    Recruiter saveRecruiter(Recruiter recruiter) throws Exception;
+    Recruiter save(Recruiter recruiter);
 
-    List<Recruiter> getAllRecruiters();
+    List<Recruiter> findAll();
 
-    Recruiter getRecruiterByEmail(String email) throws Exception;
+    Recruiter findById(Long recruiterId);
 
-    Recruiter getRecruiterById(Long id) throws Exception;
+    Recruiter findByEmailAndPassword(String email, String password);
 
 }

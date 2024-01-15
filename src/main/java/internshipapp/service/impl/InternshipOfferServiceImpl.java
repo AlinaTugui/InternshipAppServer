@@ -9,7 +9,6 @@ import internshipapp.persistence.repository.StudentRepository;
 import internshipapp.service.InternshipOfferService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;

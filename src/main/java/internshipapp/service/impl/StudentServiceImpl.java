@@ -3,47 +3,33 @@ package internshipapp.service.impl;
 import internshipapp.persistence.model.Student;
 import internshipapp.persistence.repository.StudentRepository;
 import internshipapp.service.StudentService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
-    private final StudentRepository studentRepository;
+    @Resource
+    private StudentRepository studentRepository;
 
-    @Override
-    public Student saveStudent(Student student) throws Exception {
-        if (studentRepository.findStudentByEmail(student.getEmail()).isPresent()) {
-            throw new Exception("This email already belongs to a registered student");
-        }
+    public Student save(Student student) {
         return studentRepository.save(student);
     }
 
     @Override
-    public List<Student> getAllStudents() {
+    public List<Student> findAll() {
         return studentRepository.findAll();
     }
 
     @Override
-    public Student getStudentById(Long id) throws Exception {
-        if (studentRepository.findById(id).isEmpty()) {
-            throw new Exception("Student with id="+id+" does not exist");
-        }
-
-        if (studentRepository.findById(id).isPresent()) {
-            return studentRepository.findById(id).get();
-        }
-
-        return null;
+    public Student findById(Long studentId) {
+        return studentRepository.findById(studentId).get();
     }
 
     @Override
-    public Student getStudentByEmail(String email) throws Exception {
-        if (studentRepository.findStudentByEmail(email).isEmpty()) {
-            throw new Exception("User with this email does not exist" + email);
-        }
-        return studentRepository.findStudentByEmail(email).get();
+    public Student findByEmailAndPassword(String email, String password) {
+        return studentRepository.findStudentByEmailAndPassword(email, password);
     }
+
 }
